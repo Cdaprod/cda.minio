@@ -37,6 +37,8 @@ Create a `.env` file in the root directory of the repository with the following 
 MINIO_ROOT_USER=your-minio-root-user
 MINIO_ROOT_PASSWORD=your-minio-root-password
 MINIO_DOMAIN=example.com
+SSL_CERTIFICATE=your-certificate.crt
+SSL_CERTIFICATE_KEY=your-private.key
 ```
 
 Replace `your-minio-root-user` and `your-minio-root-password` with your desired MinIO root user and password, and `example.com` with your domain.
@@ -117,6 +119,11 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GH_TOKEN }}
 
+    - name: Set environment variables from secrets
+      run: |
+        echo "SSL_CERTIFICATE=${{ secrets.SSL_CERTIFICATE }}" >> $GITHUB_ENV
+        echo "SSL_CERTIFICATE_KEY=${{ secrets.SSL_CERTIFICATE_KEY }}" >> $GITHUB_ENV
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
@@ -125,9 +132,12 @@ jobs:
         tags: |
           cdaprod/cda-minio:latest
           ghcr.io/cdaprod/cda-minio:latest
+        build-args: |
+          SSL_CERTIFICATE=${{ secrets.SSL_CERTIFICATE }}
+          SSL_CERTIFICATE_KEY=${{ secrets.SSL_CERTIFICATE_KEY }}
 ```
 
-SSH Securely over Tailscale Test
+### SSH Securely over Tailscale Test
 
 This workflow tests SSH connectivity over Tailscale, hydrates MinIO and Weaviate, and installs the necessary Python dependencies.
 
@@ -140,7 +150,7 @@ on:
       - tailscale-tests
 
 jobs:
-  hydrate-minio-weaviate:
+  hydrate-minio:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -178,9 +188,9 @@ jobs:
 
 ### Useful Links
 
-	•	Connect a GitHub Action to your Tailscale network
-	•	Tailscale GitHub Action Documentation
-	•	MinIO Blog: The Future of Hybrid Cloud Pipelines
+- [Connect a GitHub Action to your Tailscale network](https://tailscale.com/blog/2021-09-github-actions-marketplace)
+- [Tailscale GitHub Action Documentation](https://github.com/tailscale/github-action)
+- [MinIO Blog: The Future of Hybrid Cloud Pipelines](https://blog.min.io/the-future-of-hybrid-cloud-pipelines-integrating-minio-tailscale-and-github-actions/)
 
 ## Adding Custom Configuration
 

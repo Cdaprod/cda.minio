@@ -30,6 +30,11 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GH_TOKEN }}
 
+    - name: Set environment variables from secrets
+      run: |
+        echo "SSL_CERTIFICATE=${{ secrets.SSL_CERTIFICATE }}" >> $GITHUB_ENV
+        echo "SSL_CERTIFICATE_KEY=${{ secrets.SSL_CERTIFICATE_KEY }}" >> $GITHUB_ENV
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with:
@@ -38,3 +43,6 @@ jobs:
         tags: |
           cdaprod/cda-minio:latest
           ghcr.io/cdaprod/cda-minio:latest
+        build-args: |
+          SSL_CERTIFICATE=${{ secrets.SSL_CERTIFICATE }}
+          SSL_CERTIFICATE_KEY=${{ secrets.SSL_CERTIFICATE_KEY }}
