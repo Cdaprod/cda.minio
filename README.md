@@ -1,6 +1,6 @@
-![](/public/IMG_2454)
+![](/public/IMG_1379)
 
-# CDA Default MinIO Instance
+# CDA-MinIO (Default Instance)
 
 This repository provides a comprehensive setup for running MinIO with DNS-style bucket naming and a reverse proxy using Nginx. Additionally, it integrates a Tailscale GitHub Action to connect to a hybrid cloud VPN, facilitating the development of application layer AI.
 
@@ -127,7 +127,7 @@ jobs:
           ghcr.io/cdaprod/cda-minio:latest
 ```
 
-### SSH Securely over Tailscale Test
+SSH Securely over Tailscale Test
 
 This workflow tests SSH connectivity over Tailscale, hydrates MinIO and Weaviate, and installs the necessary Python dependencies.
 
@@ -176,9 +176,15 @@ jobs:
           "
 ```
 
+### Useful Links
+
+	•	Connect a GitHub Action to your Tailscale network
+	•	Tailscale GitHub Action Documentation
+	•	MinIO Blog: The Future of Hybrid Cloud Pipelines
+
 ## Adding Custom Configuration
 
-You can add custom configurations or scripts as needed by modifying the `Dockerfile` and `entrypoint.sh` script. For example, you can copy additional configuration files into the container or set up more complex initialization logic.
+You can add custom configurations or scripts as needed by modifying the Dockerfile and entrypoint.sh script. For example, you can copy additional configuration files into the container or set up more complex initialization logic.
 
 ## Contributing
 
